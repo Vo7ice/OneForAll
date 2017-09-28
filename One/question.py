@@ -1,13 +1,11 @@
 import leancloud
 import requests
 from bs4 import BeautifulSoup
+from One import config
 
 from requests.adapters import HTTPAdapter
 
 __author__ = 'Vo7ice'
-
-base_url = 'http://wufazhuce.com/'
-question_url = 'question/1867'
 
 
 class Question:
@@ -16,12 +14,12 @@ class Question:
         self.user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
         self.headers = {'User-Agent': self.user_agent}
 
-    def start(self, head=base_url, foot=question_url):
+    def start(self, head=config.base_url, foot=config.question_url):
         url = head + foot
         print('url:', url)
         req = requests.get(url, headers=self.headers)
         print('req status_code:', req.status_code)
-        if req.status_code == 200:
+        if req.status_code == config.SUCCESS:
             soup = BeautifulSoup(req.content, 'html.parser')
             question_title = soup.find('div', class_='one-cuestion').findAll('h4')[0].text.strip()
             print('question_title:', question_title)
@@ -44,7 +42,7 @@ class Question:
 
 def main():
     s = requests.session()
-    s.mount(base_url, HTTPAdapter(max_retries=5))
+    s.mount(config.base_url, HTTPAdapter(max_retries=5))
     s.keep_alive = False
 
 
