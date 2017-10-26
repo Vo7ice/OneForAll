@@ -5,7 +5,7 @@ class Movie:
     def __init__(self):
         pass
 
-    def start(self, base_url=config.base_url):
+    def start(self, base_url=config.base_movie_url):
         pass
 
 
