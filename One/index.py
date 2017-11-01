@@ -6,7 +6,9 @@ from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 
 from One import config
+from One.article import Article
 from One.one import One
+from One.question import Question
 
 
 class Index:
@@ -54,12 +56,18 @@ class Index:
 
             for j in one_urls:
                 print('one url:', j)
+                one = One()
+                one.start(config.base_url, j)
 
             for x in article_urls:
                 print('article url:', x)
+                article = Article()
+                article.start(config.base_url, x)
 
             for k in question_urls:
                 print('question url:', k)
+                question = Question()
+                question.start(config.base_url, k)
         else:
             print('network error')
 
