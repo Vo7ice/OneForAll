@@ -26,14 +26,20 @@ class Index:
             one_urls = []
             article_urls = []
             question_urls = []
+            vols = []
+            # 找到所有vol的值
+            vol_list = soup.findAll('p', class_='titulo')
+            print('vol_list:', len(vol_list))
+            for i in vol_list:
+                print('vol', i.text)
+                vols.append(i.text)
+
             # 找到所有图片的url
-            item_list = soup.findAll('div', class_='item')
-            print('item_list size:', len(item_list))
-            for i in item_list:
+            one_list = soup.findAll('div', class_='item')
+            print('item_list size:', len(one_list))
+            for i in one_list:
                 print('oen url:', i.a['href'])
                 one_urls.append(i.a['href'][-len(config.one_url):])
-                # one = One()
-                # one.start(config.base_url, one_foot_url)
 
             # 找到所有文章的url
             active = soup.find('p', class_='one-articulo-titulo').a['href'][-len(config.article_url):]
@@ -54,20 +60,21 @@ class Index:
                 print('question url:', i.a['href'])
                 question_urls.append(i.a['href'][-len(config.question_url):])
 
-            for j in one_urls:
-                print('one url:', j)
+            # 开始爬取内容
+            for j, k in enumerate(one_urls):
+                print('one url:', j, k)
                 one = One()
-                one.start(config.base_url, j)
+                one.start(config.base_url, k, vols[j])
 
-            for x in article_urls:
+            for x, y in enumerate(article_urls):
                 print('article url:', x)
                 article = Article()
-                article.start(config.base_url, x)
+                article.start(config.base_url, y, vols[x])
 
-            for k in question_urls:
-                print('question url:', k)
-                question = Question()
-                question.start(config.base_url, k)
+            for m, n in enumerate(question_urls):
+                print('question url:', m, n)
+                # question = Question()
+                # question.start(config.base_url, k)
         else:
             print('network error')
 

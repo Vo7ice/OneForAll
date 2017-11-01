@@ -15,7 +15,7 @@ class One:
         self.user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
         self.headers = {'User-Agent': self.user_agent}
 
-    def start(self, head=config.base_url, foot=config.one_url):
+    def start(self, head=config.base_url, foot=config.one_url, vol='-1'):
         url = head + foot
         print('url:', url)
         req = requests.get(url, headers=self.headers)
@@ -35,7 +35,7 @@ class One:
             may = soup.find('p', class_='may').text.strip()
             print('may:', may)
 
-            one_save = check_one_exist(foot)
+            one_save = check_vol_exist(vol)
             if one_save is None:
                 OneSave = leancloud.Object.extend('OneSave')
                 one_save = OneSave()
@@ -47,11 +47,21 @@ class One:
                 one_save.set('image_day', dom)
                 one_save.set('image_date', may)
                 one_save.save()
+            else:
+                pass
         else:
             print('network error')
 
 
 class OneSave(Object):
+    @property
+    def vol(self):
+        return self.get('vol')
+
+    @vol.setter
+    def vol(self, value):
+        return self.set('vol', value)
+
     @property
     def image_url(self):
         return self.get('image_url')
@@ -107,6 +117,20 @@ class OneSave(Object):
     @image_date.setter
     def image_date(self, value):
         return self.set('image_date', value)
+
+
+def check_vol_exist(vol):
+    if vol == -1:
+        return 1
+    else:
+        OneSave = leancloud.Object.extend('OneSave')
+        query = OneSave.query
+        try:
+            one_info = query.equal_to('image_vol', vol).find()[0]
+        except IndexError as e:
+            print('IndexError')
+            one_info = None
+    return one_info
 
 
 def check_one_exist(url):
