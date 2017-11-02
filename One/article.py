@@ -15,7 +15,7 @@ class Article:
         self.user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
         self.headers = {'User-Agent': self.user_agent}
 
-    def start(self, head=config.base_url, foot=config.article_url, vol='-1'):
+    def start(self, head=config.base_url, foot=config.article_url, vol=-1):
         url = head + foot
         print('url:', url)
         req = requests.get(url, headers=self.headers)
@@ -117,15 +117,16 @@ class ArticleSave(Object):
 
 def check_article_vol_exist(vol):
     if vol == -1:
-        return True
-    ArticleSave = leancloud.Object.extend('ArticleSave')
-    query = ArticleSave.query
-    try:
-        article_info = query.equal_to('article_vol', vol).find()[0]
-    except IndexError as e:
-        print('IndexError')
-        article_info = None
-    return article_info
+        return not None
+    else:
+        ArticleSave = leancloud.Object.extend('ArticleSave')
+        query = ArticleSave.query
+        try:
+            article_info = query.equal_to('article_vol', vol).find()[0]
+        except IndexError as e:
+            print('IndexError')
+            article_info = None
+        return article_info
 
 
 def main():

@@ -73,8 +73,8 @@ class Index:
 
             for m, n in enumerate(question_urls):
                 print('question url:', m, n)
-                # question = Question()
-                # question.start(config.base_url, k)
+                question = Question()
+                question.start(config.base_url, n, vols[m])
         else:
             print('network error')
 

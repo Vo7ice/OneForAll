@@ -36,6 +36,7 @@ class One:
             print('may:', may)
 
             one_save = check_vol_exist(vol)
+            print('vol', vol)
             if one_save is None:
                 OneSave = leancloud.Object.extend('OneSave')
                 one_save = OneSave()
@@ -120,8 +121,8 @@ class OneSave(Object):
 
 
 def check_vol_exist(vol):
-    if vol == -1:
-        return 1
+    if vol == '-1':
+        return not None
     else:
         OneSave = leancloud.Object.extend('OneSave')
         query = OneSave.query
@@ -130,7 +131,7 @@ def check_vol_exist(vol):
         except IndexError as e:
             print('IndexError')
             one_info = None
-    return one_info
+        return one_info
 
 
 def check_one_exist(url):
