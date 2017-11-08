@@ -6,3 +6,5 @@ foot_movie_url = '/subject/1292052/'  # 肖申克的救赎
 
 base_music_url = 'https://music.douban.com'
 foot_music_url = '/subject/2995812/'  # We Sing. We Dance. We Steal Things.
+
+SUCCESS = 200

@@ -1,4 +1,5 @@
 import leancloud
+from bs4 import BeautifulSoup
 from leancloud import Object
 import requests
 from requests.adapters import HTTPAdapter
@@ -13,7 +14,19 @@ class Book:
         self.headers = {'User-Agent': self.user_agent}
 
     def start(self, base_url=config.base_book_url, foot_url=config.foot_book_url):
-        pass
+        url = base_url + foot_url
+        print('url:', url)
+        response = requests.get(url, headers=self.headers)
+        print('response code:', response.status_code)
+        if response.status_code == config.SUCCESS:
+            soup = BeautifulSoup(response.content, 'html.parser')
+            info_list = soup.find('div', id='info')  # .findAll('span', class_='pl')
+            print('infor_list:%s,info-a:%s' % (info_list.children.size(), info_list.findAll('a')))
+            # for x in info_list:
+            #     if len(x) is not None:
+            #         print('x:', x.string)
+        else:
+            print('network error!')
 
 
 def main():
