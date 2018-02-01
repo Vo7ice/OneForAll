@@ -22,9 +22,6 @@ class Book:
             soup = BeautifulSoup(response.content, 'html.parser')
             info_list = soup.find('div', id='info')  # .findAll('span', class_='pl')
             print('infor_list:%s,info-a:%s' % (info_list.children.size(), info_list.findAll('a')))
-            # for x in info_list:
-            #     if len(x) is not None:
-            #         print('x:', x.string)
         else:
             print('network error!')
 
